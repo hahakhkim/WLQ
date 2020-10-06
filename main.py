@@ -2,14 +2,13 @@ import numpy as np
 import argparse
 import os
 import math_lib
-import Minimax_LQR
+import Finite_horizon_controller
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--stage_number", default=150, type=int) # Number of stages
     parser.add_argument("--test_number", default=100, type=int) # Number of test cases
-    parser.add_argument("--theta", default=2.0) # Radius of the Wasserstein ambiguity set
-    parser.add_argument("--penalty", default=2.0) # Coefficient of the Wasserstein penalty
+    parser.add_argument("--theta", default=1.0) # Radius of the Wasserstein ambiguity set
     parser.add_argument("--sample_number", default=10, type=int)  # Number of samples
     parser.add_argument("--sample_mean", default=0.02)  # Mean of generated samples
     parser.add_argument("--sample_sigma", default=0.01)  # Sigma of generated samples
@@ -30,7 +29,7 @@ if __name__ == "__main__":
 
     if args.use_saved_sample:
         # Load sample
-        sample = np.load("./inputs/Sample.npy") # (Sample number x Stage number x k x 1) matrix
+        sample = np.load("./inputs/Sample.npy") # (Stage number x Sample number x k x 1) matrix
         sample_mean = np.load("./inputs/Sample_mean.npy") # (Stage number x k x 1) matrix
     else:
         # Generate sample
@@ -44,10 +43,10 @@ if __name__ == "__main__":
             "sample_mean": sample_mean,
             "stage_number": args.stage_number,
             "test_number": args.test_number,
-            "theta": args.theta,
-            "penalty": args.penalty
+            "theta": args.theta
         }
-    controller = Minimax_LQR.Finite_horizon_controller(**kwargs)
-    controller.simulate()
-    controller.plot_results(state_index=19, figure_number=1, controller="Standard LQG")
-    controller.plot_results(state_index=19, figure_number=2, controller="Minimax LQR")
+    finite_controller = Finite_horizon_controller.Finite_horizon_controller(**kwargs)
+    finite_controller.optimize_penalty()
+    finite_controller.simulate()
+    finite_controller.plot_both_results(state_index=19, figure_number=3)
+    finite_controller.save()
