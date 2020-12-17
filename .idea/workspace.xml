@@ -1,7 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d1f9abf8-e46f-4e2f-af85-ca80f1411ac5" name="Default Changelist" comment="" />
+    <list default="true" id="d1f9abf8-e46f-4e2f-af85-ca80f1411ac5" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/plot_lib.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/settling_time.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Finite_horizon_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Finite_horizon_controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Infinite_horizon_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Infinite_horizon_controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inputs/Sample.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/inputs/Sample_mean.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/inputs/x_0.npy" beforeDir="false" afterPath="$PROJECT_DIR$/inputs/x_0.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/math_lib.py" beforeDir="false" afterPath="$PROJECT_DIR$/math_lib.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Minimax_LQR_finite_J.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Minimax_LQR_finite_K.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Minimax_LQR_finite_L.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Minimax_LQR_finite_P.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Minimax_LQR_finite_X.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Minimax_LQR_finite_r.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Standard_LQG_finite_J.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Standard_LQG_finite_K.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Standard_LQG_finite_P.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Standard_LQG_finite_X.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/figure1.png" beforeDir="false" afterPath="$PROJECT_DIR$/results/figure1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/figure2.png" beforeDir="false" afterPath="$PROJECT_DIR$/results/figure2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/figure3.png" beforeDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -10,11 +35,59 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1316">
-              <caret line="51" column="28" selection-start-line="51" selection-start-column="28" selection-end-line="51" selection-end-column="28" />
+            <state relative-caret-position="-1064">
+              <caret line="70" column="40" selection-start-line="70" selection-start-column="40" selection-end-line="70" selection-end-column="40" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/settling_time.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="263">
+              <caret line="44" column="20" selection-start-line="44" selection-start-column="20" selection-end-line="44" selection-end-column="20" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/plot_lib.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="152">
+              <caret line="17" column="45" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
+              <folding>
+                <element signature="e#0#31#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/math_lib.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="653">
+              <caret line="222" column="50" selection-start-line="222" selection-start-column="50" selection-end-line="222" selection-end-column="50" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Finite_horizon_controller.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="182">
+              <caret line="51" column="68" selection-start-line="51" selection-start-column="40" selection-end-line="51" selection-end-column="68" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -25,32 +98,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Infinite_horizon_controller.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5096">
-              <caret line="186" column="41" selection-start-line="186" selection-start-column="41" selection-end-line="186" selection-end-column="41" />
+            <state relative-caret-position="276">
+              <caret line="118" column="14" selection-start-line="118" selection-start-column="14" selection-end-line="118" selection-end-column="14" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Finite_horizon_controller.py">
+        <entry file="file://$USER_HOME$/AppData/Roaming/Python/Python37/site-packages/scipy/linalg/decomp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3864">
-              <caret line="142" column="25" selection-start-line="142" selection-start-column="25" selection-end-line="142" selection-end-column="25" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/math_lib.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1583">
-              <caret line="110" selection-start-line="110" selection-end-line="110" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="188">
+              <caret line="250" selection-start-line="250" selection-end-line="250" />
             </state>
           </provider>
         </entry>
@@ -69,7 +130,36 @@
       <find>store_</find>
       <find>sample</find>
       <find>ricca</find>
+      <find>single</find>
+      <find>lam</find>
+      <find>solve_minimax</find>
+      <find>solve</find>
+      <find>objective</find>
+      <find>self.opt</find>
+      <find>_P</find>
+      <find>prin</find>
+      <find>print</find>
+      <find>solve_</find>
+      <find>plot_b</find>
+      <find>doesn</find>
+      <find>plot_both</find>
+      <find>generate</find>
+      <find>normal</find>
+      <find>save</find>
+      <find>compa</find>
+      <find>median</find>
+      <find>plot_all_data</find>
+      <find>kwargs.</find>
+      <find>0.01</find>
+      <find>plot_medi</find>
+      <find>plot</find>
+      <find>eigh</find>
+      <find>linalg.</find>
+      <find>linalg.eig</find>
     </findStrings>
+    <replaceStrings>
+      <replace>penalty</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -80,14 +170,17 @@
         <option value="$PROJECT_DIR$/Wasserstein_LQR.py" />
         <option value="$PROJECT_DIR$/utils.py" />
         <option value="$PROJECT_DIR$/Standard_LQG.py" />
-        <option value="$PROJECT_DIR$/math_lib.py" />
         <option value="$PROJECT_DIR$/Minimax_LQR.py" />
-        <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/Infinite_horizon_controller.py" />
+        <option value="$PROJECT_DIR$/settling_time.py" />
+        <option value="$PROJECT_DIR$/plot_lib.py" />
+        <option value="$PROJECT_DIR$/Finite_horizon_controller.py" />
+        <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/math_lib.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="73" />
     <option name="y" value="33" />
     <option name="width" value="1395" />
@@ -98,6 +191,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -105,11 +199,25 @@
               <item name="Wasserstein_LQR" type="b2602c69:ProjectViewProjectNode" />
               <item name="Wasserstein_LQR" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Wasserstein_LQR" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Wasserstein_LQR" type="462c0819:PsiDirectoryNode" />
+              <item name="results" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Wasserstein_LQR" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Wasserstein_LQR" type="462c0819:PsiDirectoryNode" />
+              <item name="results" type="462c0819:PsiDirectoryNode" />
+              <item name="finite_horizon" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Wasserstein_LQR" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="RecentsManager">
@@ -130,6 +238,48 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.main">
+    <configuration name="Finite_horizon_controller" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Wasserstein_LQR" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Finite_horizon_controller.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Infinite_horizon_controller" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Wasserstein_LQR" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Infinite_horizon_controller.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Minimax_LQR" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Wasserstein_LQR" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -172,7 +322,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="math_lib" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="settling_time" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Wasserstein_LQR" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -184,7 +334,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/math_lib.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/settling_time.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -196,8 +346,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.settling_time" />
+        <item itemvalue="Python.Finite_horizon_controller" />
+        <item itemvalue="Python.Infinite_horizon_controller" />
         <item itemvalue="Python.Minimax_LQR" />
-        <item itemvalue="Python.math_lib" />
       </list>
     </recent_temporary>
   </component>
@@ -215,16 +367,15 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24973656" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11854584" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.0791757" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3991323" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.0845987" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.52819955" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -237,6 +388,13 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
   </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="wr" />
+      </configuration>
+    </watches-manager>
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Wasserstein_LQR.py" />
     <entry file="file://$USER_HOME$/AppData/Roaming/Python/Python37/site-packages/scipy/optimize/_minimize.py">
@@ -246,37 +404,67 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/Infinite_horizon_controller.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1316">
-          <caret line="51" column="28" selection-start-line="51" selection-start-column="28" selection-end-line="51" selection-end-column="28" />
+        <state relative-caret-position="276">
+          <caret line="118" column="14" selection-start-line="118" selection-start-column="14" selection-end-line="118" selection-end-column="14" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Infinite_horizon_controller.py">
+    <entry file="file://$USER_HOME$/AppData/Roaming/Python/Python37/site-packages/scipy/linalg/decomp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5096">
-          <caret line="186" column="41" selection-start-line="186" selection-start-column="41" selection-end-line="186" selection-end-column="41" />
+        <state relative-caret-position="188">
+          <caret line="250" selection-start-line="250" selection-end-line="250" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Finite_horizon_controller.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3864">
-          <caret line="142" column="25" selection-start-line="142" selection-start-column="25" selection-end-line="142" selection-end-column="25" />
+        <state relative-caret-position="182">
+          <caret line="51" column="68" selection-start-line="51" selection-start-column="40" selection-end-line="51" selection-end-column="68" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/settling_time.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="263">
+          <caret line="44" column="20" selection-start-line="44" selection-start-column="20" selection-end-line="44" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plot_lib.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="17" column="45" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/math_lib.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1583">
-          <caret line="110" selection-start-line="110" selection-end-line="110" />
+        <state relative-caret-position="653">
+          <caret line="222" column="50" selection-start-line="222" selection-start-column="50" selection-end-line="222" selection-end-column="50" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1064">
+          <caret line="70" column="40" selection-start-line="70" selection-start-column="40" selection-end-line="70" selection-end-column="40" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>

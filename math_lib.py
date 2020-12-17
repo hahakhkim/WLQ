@@ -2,6 +2,7 @@ import numpy as np
 import math
 from scipy import linalg
 
+
 def matmul3(A,B,C):
     return np.matmul(A,np.matmul(B,C))
 
@@ -63,26 +64,26 @@ def standard_LQG_control_gain(A, B, P, R):
     return - matmul4(np.linalg.inv(R + matmul3(np.transpose(B), P, B)), np.transpose(B), P, A)
 
 
-def worst_case_distribution(sample, x, u, A, B, Xi, P, r, lam):
+def worst_case_distribution(sample, x, u, A, B, Xi, P, r, penalty):
     N = len(sample) # Number of samples
     dim = len(sample[0]) # Dimension of disturbance w
     sample_new = np.zeros((N, dim, 1))
     for i in range(N):
-        temp1 = lam*np.eye(dim) - matmul3(np.transpose(Xi), P, Xi)
-        temp2 = matmul3(np.transpose(Xi), P, np.matmul(A, x) + np.matmul(B, u))+np.matmul(np.transpose(Xi), r) + lam * np.reshape(sample[i], (dim, 1))
+        temp1 = penalty*np.eye(dim) - matmul3(np.transpose(Xi), P, Xi)
+        temp2 = matmul3(np.transpose(Xi), P, np.matmul(A, x) + np.matmul(B, u))+np.matmul(np.transpose(Xi), r) + penalty * np.reshape(sample[i], (dim, 1))
         sample_new[i] = np.linalg.solve(temp1, temp2)
     rand = np.random.randint(N)
     return sample_new[rand]
 
 
-def minimax_Riccati_iteration(A, B, Xi, Q, R, P, r, z, sample, sample_mean, lam):
+def minimax_Riccati_iteration(A, B, Xi, Q, R, P, r, z, sample, sample_mean, penalty):
     n = len(A)
     k = len(Xi[0])
-    W = matmul3(B, np.linalg.inv(R), np.transpose(B)) - 1.0/lam*np.matmul(Xi, np.transpose(Xi))
+    W = matmul3(B, np.linalg.inv(R), np.transpose(B)) - 1.0/penalty*np.matmul(Xi, np.transpose(Xi))
     temp1 = np.linalg.inv(np.eye(n) + np.matmul(P, W))
     temp2 = matmul3(P, Xi, sample_mean) + r
-    temp3 = np.linalg.inv(np.eye(k) - 1.0/lam*matmul3(np.transpose(Xi), P, Xi))
-    temp4 = np.linalg.inv(np.eye(n) - 1.0/lam*matmul3(P, Xi, np.transpose(Xi)))
+    temp3 = np.linalg.inv(np.eye(k) - 1.0/penalty*matmul3(np.transpose(Xi), P, Xi))
+    temp4 = np.linalg.inv(np.eye(n) - 1.0/penalty*matmul3(P, Xi, np.transpose(Xi)))
     P_result = Q + matmul4(np.transpose(A), temp1, P, A)
     r_result = matmul3(np.transpose(A), temp1, temp2)
     z_temp1 = np.zeros((1, 1))
@@ -96,31 +97,148 @@ def minimax_Riccati_iteration(A, B, Xi, Q, R, P, r, z, sample, sample_mean, lam)
     return P_result, r_result, z_result
 
 
-def minimax_LQR_control_gain(A, B, Xi, Q, R, P, r, sample_mean, lam):
+def minimax_Riccati_iteration_P(A, B, Xi, Q, R, P, penalty):
     n = len(A)
-    temp1 = np.eye(n) + matmul4(P, B, np.linalg.inv(R), np.transpose(B)) - 1.0/lam*matmul3(P, Xi, np.transpose(Xi))
+    W = matmul3(B, np.linalg.inv(R), np.transpose(B)) - 1.0/penalty*np.matmul(Xi, np.transpose(Xi))
+    temp1 = np.linalg.inv(np.eye(n) + np.matmul(P, W))
+    P_result = Q + matmul4(np.transpose(A), temp1, P, A)
+    return P_result
+
+
+def minimax_LQR_control_gain(A, B, Xi, Q, R, P, r, sample_mean, penalty):
+    n = len(A)
+    temp1 = np.eye(n) + matmul4(P, B, np.linalg.inv(R), np.transpose(B)) - 1.0/penalty*matmul3(P, Xi, np.transpose(Xi))
     temp2 = matmul3(P, Xi, sample_mean) + r
     K = - matmul5(np.linalg.inv(R), np.transpose(B), np.linalg.inv(temp1), P, A)
     L = - matmul4(np.linalg.inv(R), np.transpose(B), np.linalg.inv(temp1), temp2)
     return K, L
 
-def objective_function(A, B, Xi, Q, Q_f, R, lam, theta, stage_number, initial_state, sample, sample_mean):
+def check_assumption1(stage_number, A, B, Xi, Q, Q_f, R, penalty):
+    P = Q_f
+    if penalty < 0:
+        return False
+    for t in range(stage_number, 0, -1):
+        eigen = linalg.eigvalsh(matmul3(np.transpose(Xi), P, Xi))
+         # Assumption1 Test
+        if np.max(eigen.real) > penalty:
+            return False
+        # Riccati
+        P = minimax_Riccati_iteration_P(A, B, Xi, Q, R, P, penalty)
+    return True
+
+def binarysearch_infimum_penalty(stage_number, A, B, Xi, Q, Q_f, R):
+    left = 0
+    right = 1000
+    while right - left > 1e-5:
+        mid = (left + right) / 2.0
+        if check_assumption1(stage_number, A, B, Xi, Q, Q_f, R, mid):
+            right = mid
+        else:
+            left = mid
+    lam_hat = right
+    print("Infimum value of penalty coefficient satisfying Assumption1:", lam_hat)
+    return lam_hat
+
+
+
+def objective_function_finite(A, B, Xi, Q, Q_f, R, penalty, theta, stage_number, initial_state, sample, sample_mean):
     P = Q_f
     r = np.zeros((len(A), 1))
     z = np.zeros((1, 1))
 
-    if lam < 0:
+    if penalty < 0:
         return math.inf
     for t in range(stage_number, 0, -1):
-        eigen = linalg.eig(matmul3(np.transpose(Xi), P, Xi))
-        eigenvalues = eigen[0]
+        eigen = linalg.eigvalsh(matmul3(np.transpose(Xi), P, Xi))
 
         # Assumption1 Test
-        if np.max(eigenvalues.real) > lam:
+        if np.max(eigen.real) > penalty:
             return math.inf
 
         # Riccati
-        P, r, z = minimax_Riccati_iteration(A, B, Xi, Q, R, P, r, z, sample[t-1], sample_mean[t-1], lam)
+        P, r, z = minimax_Riccati_iteration(A, B, Xi, Q, R, P, r, z, sample[t-1], sample_mean[t-1], penalty)
 
-    return lam*theta*theta + (matmul3(np.transpose(initial_state), P, initial_state)[0][0]
+    return penalty*theta*theta + (matmul3(np.transpose(initial_state), P, initial_state)[0][0]
                               + 2*np.matmul(np.transpose(r), initial_state)[0][0] + z[0][0])/stage_number
+
+def solve_minimax_Riccati(A, B, Xi, Q, Q_f, R, sample, sample_mean, penalty, error_bound, max_iteration):
+    P = Q_f
+    r = np.zeros((len(A), 1))
+    W = matmul3(B, np.linalg.inv(R), np.transpose(B)) - np.matmul(Xi, np.transpose(Xi))/penalty
+    eigen = linalg.eigvalsh(W)
+    if np.min(eigen.real) < -1e-6:
+        print("Assumption3 is violated!")
+    validity = False
+    for i in range(max_iteration):
+        P_temp, r_temp, _ = minimax_Riccati_iteration(A, B, Xi, Q, R, P, r, 0, sample, sample_mean, penalty)
+        eigen = linalg.eigvalsh(matmul3(np.transpose(Xi), P_temp, Xi))
+        # Assumption1 Test
+        if np.max(eigen.real) > penalty:
+            print("Assumption1 is violated!")
+            break
+        max_diff = 0
+        for row in range(len(P)):
+            for col in range(len(P[0])):
+                if abs(P[row, col] - P_temp[row, col]) > max_diff:
+                    max_diff = abs(P[row, col] - P_temp[row, col])
+        P = P_temp
+        r = r_temp
+        if max_diff < error_bound:
+            print("Minimax Riccati solution found in iteration", str(i))
+            validity = True
+            return P, r, validity
+    print("Minimax Riccati iteration doesn't converge")
+    return P, r, validity
+
+def solve_standard_Riccati(A, B, Q, Q_f, R, error_bound, max_iteration):
+    P = Q_f
+    for i in range(max_iteration):
+        P_temp =  standard_Riccati_iteration(A, B, P, Q, R)
+        max_diff = 0
+        for row in range(len(P)):
+            for col in range(len(P[0])):
+                if abs(P[row][col] - P_temp[row][col]) > max_diff:
+                    max_diff = abs(P[row][col] - P_temp[row][col])
+        P = P_temp
+        if max_diff < error_bound:
+            print("Standard Riccati solution found in iteration", str(i))
+            return P
+    print("Standard Riccati iteration doesn't fully converge")
+    return P
+
+def objective_function_infinite(A, B, Xi, Q, Q_f, R, penalty, theta, sample, sample_mean, error_bound, max_iteration):
+    print(penalty)
+    if penalty < 0:
+        return math.inf
+
+    P, r, validity = solve_minimax_Riccati(A, B, Xi, Q, Q_f, R, sample, sample_mean, penalty, error_bound, max_iteration)
+
+    if validity == False:
+        return math.inf
+
+    eigen = linalg.eigvalsh(matmul3(np.transpose(Xi), P, Xi))
+
+    # Assumption1 Test
+    if np.max(eigen.real) > penalty:
+        print("maximum eigenvalue :", np.max(eigen.real))
+        print("penalty :", penalty)
+        return math.inf
+
+    n = len(A)
+    k = len(Xi[0])
+    W = matmul3(B, np.linalg.inv(R), np.transpose(B)) - 1.0/penalty*np.matmul(Xi, np.transpose(Xi))
+    temp1 = np.linalg.inv(np.eye(n) + np.matmul(P, W))
+    temp2 = np.linalg.inv(np.eye(k) - 1.0/penalty*matmul3(np.transpose(Xi), P, Xi))
+    temp3 = np.linalg.inv(np.eye(n) - 1.0/penalty*matmul3(P, Xi, np.transpose(Xi)))
+    z_temp1 = np.zeros((1, 1))
+    for s in range(len(sample)):
+        w = sample[s]
+        z_temp1 = z_temp1 + matmul6(np.transpose(w), temp2, np.transpose(Xi), P, Xi, w)
+    z_temp1 = z_temp1 / len(sample)
+    z_temp2 = matmul6(np.transpose(sample_mean), np.transpose(Xi), temp1 - temp3, P, Xi, sample_mean)
+    z_temp3 = matmul3(2*np.matmul(np.transpose(sample_mean), np.transpose(Xi))-np.matmul(np.transpose(r), W), temp1, r)
+    z_result = z_temp1 + z_temp2 + z_temp3
+    result = penalty * theta * theta + z_result[0][0]
+    print(result)
+    return result
+

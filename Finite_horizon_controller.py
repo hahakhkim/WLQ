@@ -1,8 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
-
+import math
 import math_lib
+import plot_lib
 
 class Finite_horizon_controller(object):
     def __init__(self, A, B, Xi, Q, Q_f, R, x_0, sample, sample_mean, theta, stage_number, test_number):
@@ -16,13 +17,15 @@ class Finite_horizon_controller(object):
         self.sample = sample
         self.sample_mean = sample_mean
         self.theta = theta
-        self.penalty = 0
+        self.optimal_penalty = 0
+        self.infimum_penalty = 0
+        self.control_energy = 0
         self.stage_number = stage_number
         self.test_number = test_number
         self.dim_x = len(A)
         self.dim_u = len(B[0])
         self.dim_w = len(Xi[0])
-
+        self.reliability = 0
         # Matrix Container for Standard LQG Controller
         self.P_standard = np.zeros((self.stage_number + 1, self.dim_x, self.dim_x)) #
         self.K_standard = np.zeros((self.stage_number, self.dim_u, self.dim_x))
@@ -39,11 +42,25 @@ class Finite_horizon_controller(object):
         self.J_minimax = np.zeros((self.test_number, self.stage_number + 1))
 
     def objective(self, x):
-        return math_lib.objective_function(A=self.A, B=self.B, Xi=self.Xi, Q=self.Q, Q_f=self.Q_f, R=self.R, lam=x,
+        if x < self.infimum_penalty:
+            return math.inf
+        return math_lib.objective_function_finite(A=self.A, B=self.B, Xi=self.Xi, Q=self.Q, Q_f=self.Q_f, R=self.R, penalty=x,
                                     theta=self.theta, stage_number=self.stage_number, initial_state=self.x_0, sample=self.sample, sample_mean=self.sample_mean)
+
     def optimize_penalty(self):
-        self.penalty = minimize(self.objective, x0=np.array([5.0]), method='nelder-mead', options={'xatol': 1e-6, 'disp': True}).x[0]
-        print("Optimal penalty:", self.penalty)
+        # Find inf_penalty (infimum value of penalty coefficient satisfying Assumption 1)
+        self.infimum_penalty = math_lib.binarysearch_infimum_penalty(self.stage_number, self.A, self.B, self.Xi, self.Q, self.Q_f, self.R)
+
+        # Optimize penalty using nelder-mead method
+        self.optimal_penalty = minimize(self.objective, x0=np.array([2*self.infimum_penalty]), method='nelder-mead', options={'xatol': 1e-6, 'disp': True}).x[0]
+        print("Optimal penalty:", self.optimal_penalty)
+
+        epsilon = (self.optimal_penalty - self.infimum_penalty)/2.0
+        for step in range(10):
+            if self.objective(self.optimal_penalty) < self.objective(self.infimum_penalty + epsilon) - epsilon*self.theta*self.theta:
+                print("Optimality is guaranteed (epsilon:" + str(epsilon) + ")")
+                break
+            epsilon = epsilon*0.5
         return
 
     def simulate(self):
@@ -53,13 +70,13 @@ class Finite_horizon_controller(object):
         for t in range(self.stage_number, 0, -1):
             self.P_standard[t - 1] = math_lib.standard_Riccati_iteration(self.A, self.B, self.P_standard[t], self.Q, self.R)
             self.P_minimax[t - 1], self.r_minimax[t-1], self.z_minimax[t-1] = math_lib.minimax_Riccati_iteration(self.A, self.B, self.Xi, self.Q, self.R,
-                                self.P_minimax[t], self.r_minimax[t], self.z_minimax[t], self.sample[t-1], self.sample_mean[t-1], self.penalty)
+                                self.P_minimax[t], self.r_minimax[t], self.z_minimax[t], self.sample[t-1], self.sample_mean[t-1], self.optimal_penalty)
 
         # Calculate control gain K_t from P_t
         for t in range(self.stage_number):
             self.K_standard[t] = math_lib.standard_LQG_control_gain(self.A, self.B, self.P_standard[t + 1], self.R)
             self.K_minimax[t], self.L_minimax[t] = math_lib.minimax_LQR_control_gain(self.A, self.B, self.Xi, self.Q, self.R,
-                                                                                     self.P_minimax[t+1], self.r_minimax[t+1], self.sample_mean[t], self.penalty)
+                                                                                     self.P_minimax[t+1], self.r_minimax[t+1], self.sample_mean[t], self.optimal_penalty)
         for itr in range(self.test_number):
             x_standard = np.zeros((self.stage_number + 1, self.dim_x, 1)) # Container for system state x_t
             x_minimax = np.zeros((self.stage_number + 1, self.dim_x, 1))
@@ -71,15 +88,15 @@ class Finite_horizon_controller(object):
             u_minimax = np.zeros((self.stage_number + 1, self.dim_u, 1))
 
             for t in range(self.stage_number):
-                # Control input
+                # Determining control input
                 u_standard[t] = np.matmul(self.K_standard[t], x_standard[t])
                 u_minimax[t] = np.matmul(self.K_minimax[t], x_minimax[t]) + self.L_minimax[t]
 
                 # Worst-case distribution generated from Wasserstein penalty problem
                 disturbance_standard = math_lib.worst_case_distribution(self.sample[t], x_standard[t], u_standard[t],
-                                                                        self.A, self.B, self.Xi, self.P_minimax[t + 1], self.r_minimax[t + 1], self.penalty)
+                                                                        self.A, self.B, self.Xi, self.P_minimax[t + 1], self.r_minimax[t + 1], self.optimal_penalty)
                 disturbance_minimax = math_lib.worst_case_distribution(self.sample[t], x_minimax[t], u_minimax[t],
-                                                                       self.A, self.B, self.Xi, self.P_minimax[t + 1], self.r_minimax[t + 1], self.penalty)
+                                                                       self.A, self.B, self.Xi, self.P_minimax[t + 1], self.r_minimax[t + 1], self.optimal_penalty)
 
                 # System equation
                 x_standard[t + 1] = np.matmul(self.A, x_standard[t]) + np.matmul(self.B, u_standard[t])\
@@ -87,11 +104,14 @@ class Finite_horizon_controller(object):
                 x_minimax[t + 1] = np.matmul(self.A, x_minimax[t]) + np.matmul(self.B, u_minimax[t])\
                                     + np.matmul(self.Xi, disturbance_minimax)
 
-                # Cost function
+                # Computing Cost
                 v_standard[t + 1] = v_standard[t] + math_lib.matmul3(np.transpose(x_standard[t]), self.Q, x_standard[t]) \
                                     + math_lib.matmul3(np.transpose(u_standard[t]), self.R, u_standard[t])
                 v_minimax[t + 1] = v_minimax[t] + math_lib.matmul3(np.transpose(x_minimax[t]), self.Q, x_minimax[t]) \
                                    + math_lib.matmul3(np.transpose(u_minimax[t]), self.R, u_minimax[t])
+            control_energy_itr = 0
+            for t in range(50):
+                control_energy_itr = control_energy_itr + np.linalg.norm(u_minimax[t]) / 50.0
 
             # Cost for the final stage.
             v_standard[self.stage_number] = v_standard[self.stage_number] + math_lib.matmul3(
@@ -104,9 +124,10 @@ class Finite_horizon_controller(object):
             self.X_minimax[itr] = x_minimax
             self.J_standard[itr] = v_standard
             self.J_minimax[itr] = v_minimax
+            self.control_energy = self.control_energy + control_energy_itr/self.test_number
         return
 
-    def plot_single_result(self, state_index, figure_number, controller="Minimax LQR"):
+    def plot_single_controller(self, state_index, figure_number, controller="Minimax LQR"):
         # Select data
         if controller == "Minimax LQR":
             X_data = self.X_minimax
@@ -115,75 +136,68 @@ class Finite_horizon_controller(object):
         else:
             print("Plot ERROR: Unidentified Controller")
             return
-
-        # Rearrange data
-        data = [[0 for itr in range(self.test_number)] for t in range(self.stage_number)]
-        for t in range(self.stage_number):
-            for itr in range(self.test_number):
-                data[t][itr] = X_data[itr][t][state_index][0]
-
-        # Box plot
-        fig = plt.figure(figure_number)
-        ax = fig.add_subplot(1, 1, 1)
-        plt.title(controller)
-        b = ax.boxplot(data, showcaps=False, showfliers=False, widths=0.001, patch_artist=True)
-        for element in ['whiskers', 'fliers', 'means', 'medians', 'caps']:
-            plt.setp(b[element], color='cyan')
-        plt.setp(b['boxes'], color='blue')
-        plt.setp(b['medians'], color='black')
-        ax.set_xticks([20 * i for i in range(int(self.stage_number / 20) + 1)])
-        ax.set_xticklabels([20 * i for i in range(int(self.stage_number / 20) + 1)])
-        ax.set_xlabel('stage')
-        ax.set_ylabel('value')
-        fig = plt.gcf()
-        fig.savefig('./results/figure' + str(figure_number) + '.png', dpi=300)
-        plt.show()
+        plot_lib.plot_single_data(X_data, state_index, figure_number, title=controller)
         return
 
-    def plot_both_results(self, state_index, figure_number):
-        # Rearrange data
-        data = np.zeros((2, self.test_number, self.stage_number))
-        for t in range(self.stage_number):
-            for itr in range(self.test_number):
-                data[0, itr, t] = self.X_standard[itr, t, state_index, 0]
-                data[1, itr, t] = self.X_minimax[itr, t, state_index, 0]
-
-        # Box plot
-        fig = plt.figure(figure_number)
-        ax = []
-        plt.subplots_adjust(hspace=0.5)
-        plt.rc('font', size=10)
-        for p in range(2):
-            ax.append(fig.add_subplot(1, 2, p + 1))
-            b = ax[p].boxplot(data[p], showcaps=False, showfliers=False, widths=0.001, patch_artist=True)
-            for element in ['whiskers', 'fliers', 'means', 'caps']:
-                plt.setp(b[element], color='cyan')
-            plt.setp(b['boxes'], color='blue')
-            plt.setp(b['medians'], color='black')
-            plt.grid(linestyle=':', linewidth=1.0, alpha=0.8)
-            ax[p].set_xticks([20 * i for i in range(int(self.stage_number / 20) + 1)])
-            ax[p].set_xticklabels([20 * i for i in range(int(self.stage_number / 20) + 1)])
-            ax[p].set_xlabel('stage')
-            if p == 0:
-                plt.title("Standard LQG")
-                ax[p].set_ylabel('value')
-            else:
-                plt.title("Minimax LQR")
-        fig.savefig('./results/figure' + str(figure_number) + '.png', dpi=300)
-        plt.show()
+    def plot_both_controllers(self, state_index, figure_number):
+        plot_lib.plot_both_data(self.X_standard, self.X_minimax, state_index, figure_number)
         return
 
     def save(self):
-        np.save("./results/Standard_LQG_finite_P", self.P_standard)
-        np.save("./results/Standard_LQG_finite_K", self.K_standard)
-        np.save("./results/Standard_LQG_finite_X", self.X_standard)
-        np.save("./results/Standard_LQG_finite_J", self.J_standard)
+        np.save("./results/finite_horizon/Standard_LQG_P", self.P_standard)
+        np.save("./results/finite_horizon/Standard_LQG_K", self.K_standard)
+        np.save("./results/finite_horizon/Standard_LQG_X", self.X_standard)
+        np.save("./results/finite_horizon/Standard_LQG_J", self.J_standard)
 
-        np.save("./results/Minimax_LQR_finite_P", self.P_minimax)
-        np.save("./results/Minimax_LQR_finite_r", self.r_minimax)
-        np.save("./results/Minimax_LQR_finite_K", self.K_minimax)
-        np.save("./results/Minimax_LQR_finite_L", self.L_minimax)
-        np.save("./results/Minimax_LQR_finite_X", self.X_minimax)
-        np.save("./results/Minimax_LQR_finite_J", self.J_minimax)
+        np.save("./results/finite_horizon/Minimax_LQR_P", self.P_minimax)
+        np.save("./results/finite_horizon/Minimax_LQR_r", self.r_minimax)
+        np.save("./results/finite_horizon/Minimax_LQR_K", self.K_minimax)
+        np.save("./results/finite_horizon/Minimax_LQR_L", self.L_minimax)
+        np.save("./results/finite_horizon/Minimax_LQR_X", self.X_minimax)
+        np.save("./results/finite_horizon/Minimax_LQR_J", self.J_minimax)
         return
 
+    def simulate_ground_truth_disturbance(self):
+        # Calculate P_t from recursion
+        self.P_minimax[self.stage_number] = self.Q_f
+        for t in range(self.stage_number, 0, -1):
+            self.P_minimax[t - 1], self.r_minimax[t-1], self.z_minimax[t-1] = math_lib.minimax_Riccati_iteration(self.A, self.B, self.Xi, self.Q, self.R,
+                                self.P_minimax[t], self.r_minimax[t], self.z_minimax[t], self.sample[t-1], self.sample_mean[t-1], self.optimal_penalty)
+
+        # Calculate control gain K_t from P_t
+        for t in range(self.stage_number):
+           self.K_minimax[t], self.L_minimax[t] = math_lib.minimax_LQR_control_gain(self.A, self.B, self.Xi, self.Q, self.R,
+                                                                                     self.P_minimax[t+1], self.r_minimax[t+1], self.sample_mean[t], self.optimal_penalty)
+        for itr in range(self.test_number):
+            x_minimax = np.zeros((self.stage_number + 1, self.dim_x, 1))
+            x_minimax[0] = np.reshape(self.x_0, (self.dim_x, 1))
+            v_minimax = np.zeros((self.stage_number + 1))
+            u_minimax = np.zeros((self.stage_number + 1, self.dim_u, 1))
+
+            for t in range(self.stage_number):
+                # Determining control input
+                u_minimax[t] = np.matmul(self.K_minimax[t], x_minimax[t]) + self.L_minimax[t]
+
+                # ground truth distribution generated from Normal distribution
+                disturbance_minimax = np.reshape(np.random.normal(0.02, 0.01, len(self.Xi[0])), (len(self.Xi[0]), 1))
+
+                # System equation
+                x_minimax[t + 1] = np.matmul(self.A, x_minimax[t]) + np.matmul(self.B, u_minimax[t])\
+                                    + np.matmul(self.Xi, disturbance_minimax)
+
+                # Computing Cost
+                v_minimax[t + 1] = v_minimax[t] + math_lib.matmul3(np.transpose(x_minimax[t]), self.Q, x_minimax[t]) \
+                                   + math_lib.matmul3(np.transpose(u_minimax[t]), self.R, u_minimax[t])
+
+            # Cost for the final stage.
+            v_minimax[self.stage_number] = v_minimax[self.stage_number] + math_lib.matmul3(
+                np.transpose(x_minimax[self.stage_number]), self.Q_f, x_minimax[self.stage_number])
+
+            # Store the result (state and cost)
+            self.X_minimax[itr] = x_minimax
+            self.J_minimax[itr] = v_minimax
+            #print("self.J_minimax[itr][self.stage_number]:", self.J_minimax[itr][self.stage_number])
+            #print("opt:", math_lib.matmul3(np.transpose(self.x_0), self.P_minimax[0], self.x_0) + 2*np.matmul(np.transpose(self.r_minimax[0]), self.x_0) + self.z_minimax[0])
+            if self.J_minimax[itr][self.stage_number] < math_lib.matmul3(np.transpose(self.x_0), self.P_minimax[0], self.x_0) + 2*np.matmul(np.transpose(self.r_minimax[0]), self.x_0) + self.z_minimax[0]:
+                self.reliability = self.reliability + 1/self.test_number
+        return
