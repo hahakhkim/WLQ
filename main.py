@@ -58,6 +58,7 @@ if __name__ == "__main__":
     finite_controller.simulate()
     finite_controller.plot_both_controllers(state_index=19, figure_number=1) # Compare the results of two controllers
     finite_controller.save()
+    
     ########### Compare the result based on two different values of theta (0.5, 1.0)   ###########
     kwargs["theta"] = 0.5
     finite_controller = Finite_horizon_controller.Finite_horizon_controller(**kwargs)

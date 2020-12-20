@@ -2,30 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d1f9abf8-e46f-4e2f-af85-ca80f1411ac5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/plot_lib.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settling_time.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Finite_horizon_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Finite_horizon_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Infinite_horizon_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Infinite_horizon_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inputs/Sample.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inputs/Sample_mean.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inputs/x_0.npy" beforeDir="false" afterPath="$PROJECT_DIR$/inputs/x_0.npy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/math_lib.py" beforeDir="false" afterPath="$PROJECT_DIR$/math_lib.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/Minimax_LQR_finite_J.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/Minimax_LQR_finite_K.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/Minimax_LQR_finite_L.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/Minimax_LQR_finite_P.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/Minimax_LQR_finite_X.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/Minimax_LQR_finite_r.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/Standard_LQG_finite_J.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/Standard_LQG_finite_K.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/Standard_LQG_finite_P.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/Standard_LQG_finite_X.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/figure1.png" beforeDir="false" afterPath="$PROJECT_DIR$/results/figure1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/figure2.png" beforeDir="false" afterPath="$PROJECT_DIR$/results/figure2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/figure3.png" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,11 +13,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1064">
-              <caret line="70" column="40" selection-start-line="70" selection-start-column="40" selection-end-line="70" selection-end-column="40" />
+            <state relative-caret-position="2016">
+              <caret line="79" selection-start-line="79" selection-end-line="79" selection-end-column="56" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -50,7 +28,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/settling_time.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="263">
+            <state relative-caret-position="1036">
               <caret line="44" column="20" selection-start-line="44" selection-start-column="20" selection-end-line="44" selection-end-column="20" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
@@ -59,11 +37,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/plot_lib.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="17" column="45" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
+            <state relative-caret-position="476">
+              <caret line="152" lean-forward="true" selection-start-line="152" selection-end-line="152" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
               </folding>
@@ -74,7 +52,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/math_lib.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="653">
+            <state relative-caret-position="6160">
               <caret line="222" column="50" selection-start-line="222" selection-start-column="50" selection-end-line="222" selection-end-column="50" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
@@ -86,7 +64,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Finite_horizon_controller.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
+            <state relative-caret-position="1288">
               <caret line="51" column="68" selection-start-line="51" selection-start-column="40" selection-end-line="51" selection-end-column="68" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
@@ -98,7 +76,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Infinite_horizon_controller.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="276">
+            <state relative-caret-position="3164">
               <caret line="118" column="14" selection-start-line="118" selection-start-column="14" selection-end-line="118" selection-end-column="14" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
@@ -110,7 +88,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/AppData/Roaming/Python/Python37/site-packages/scipy/linalg/decomp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
+            <state relative-caret-position="7000">
               <caret line="250" selection-start-line="250" selection-end-line="250" />
             </state>
           </provider>
@@ -156,6 +134,7 @@
       <find>eigh</find>
       <find>linalg.</find>
       <find>linalg.eig</find>
+      <find>all</find>
     </findStrings>
     <replaceStrings>
       <replace>penalty</replace>
@@ -175,8 +154,8 @@
         <option value="$PROJECT_DIR$/settling_time.py" />
         <option value="$PROJECT_DIR$/plot_lib.py" />
         <option value="$PROJECT_DIR$/Finite_horizon_controller.py" />
-        <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/math_lib.py" />
+        <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
   </component>
@@ -368,13 +347,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11854584" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.0845987" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.11388286" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.52819955" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -404,9 +384,49 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2016">
+          <caret line="79" selection-start-line="79" selection-end-line="79" selection-end-column="56" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/settling_time.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1036">
+          <caret line="44" column="20" selection-start-line="44" selection-start-column="20" selection-end-line="44" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/math_lib.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6160">
+          <caret line="222" column="50" selection-start-line="222" selection-start-column="50" selection-end-line="222" selection-end-column="50" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Finite_horizon_controller.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1288">
+          <caret line="51" column="68" selection-start-line="51" selection-start-column="40" selection-end-line="51" selection-end-column="68" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Infinite_horizon_controller.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
+        <state relative-caret-position="3164">
           <caret line="118" column="14" selection-start-line="118" selection-start-column="14" selection-end-line="118" selection-end-column="14" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
@@ -416,57 +436,17 @@
     </entry>
     <entry file="file://$USER_HOME$/AppData/Roaming/Python/Python37/site-packages/scipy/linalg/decomp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
+        <state relative-caret-position="7000">
           <caret line="250" selection-start-line="250" selection-end-line="250" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Finite_horizon_controller.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="51" column="68" selection-start-line="51" selection-start-column="40" selection-end-line="51" selection-end-column="68" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/settling_time.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="44" column="20" selection-start-line="44" selection-start-column="20" selection-end-line="44" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/plot_lib.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="17" column="45" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
+        <state relative-caret-position="476">
+          <caret line="152" lean-forward="true" selection-start-line="152" selection-end-line="152" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/math_lib.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="653">
-          <caret line="222" column="50" selection-start-line="222" selection-start-column="50" selection-end-line="222" selection-end-column="50" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1064">
-          <caret line="70" column="40" selection-start-line="70" selection-start-column="40" selection-end-line="70" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
