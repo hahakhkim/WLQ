@@ -1,4 +1,4 @@
-# Wasserstein_Minimax_LQR
+# Wasserstein Minimax Linear Quadratic Control
 Experiment &amp; Visualization of Minimax Linear Quadratic Regulator using the Wasserstein Metric
 
 ### Usage
