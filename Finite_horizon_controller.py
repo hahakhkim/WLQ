@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 import math
 import math_lib
@@ -49,18 +48,12 @@ class Finite_horizon_controller(object):
 
     def optimize_penalty(self):
         # Find inf_penalty (infimum value of penalty coefficient satisfying Assumption 1)
-        self.infimum_penalty = math_lib.binarysearch_infimum_penalty(self.stage_number, self.A, self.B, self.Xi, self.Q, self.Q_f, self.R)
-
+        print("Computing penalty boundary...")
+        self.infimum_penalty = math_lib.binarysearch_infimum_penalty_finite(self.stage_number, self.A, self.B, self.Xi, self.Q, self.Q_f, self.R)
+        print("Boundary penalty (lambda_hat):", self.infimum_penalty)
         # Optimize penalty using nelder-mead method
         self.optimal_penalty = minimize(self.objective, x0=np.array([2*self.infimum_penalty]), method='nelder-mead', options={'xatol': 1e-6, 'disp': True}).x[0]
-        print("Optimal penalty:", self.optimal_penalty)
-
-        epsilon = (self.optimal_penalty - self.infimum_penalty)/2.0
-        for step in range(10):
-            if self.objective(self.optimal_penalty) < self.objective(self.infimum_penalty + epsilon) - epsilon*self.theta*self.theta:
-                print("Optimality is guaranteed (epsilon:" + str(epsilon) + ")")
-                break
-            epsilon = epsilon*0.5
+        print("Optimal penalty (lambda_star):", self.optimal_penalty)
         return
 
     def simulate(self):

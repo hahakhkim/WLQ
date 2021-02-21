@@ -32,8 +32,7 @@ if __name__ == "__main__":
     R = np.load("./inputs/R.npy") # (m x m) matrix
     x_0 = np.load("./inputs/x_0.npy") # (n x 1) vector
 
-
-    ########### Finite Horizon Control ###########
+    ########### Finite-Horizon Control ###########
     if args.use_saved_sample:
         # Load sample data for each stage
         multi_stage_sample = np.load("./inputs/multi_stage_sample.npy") # (Stage number x Sample number x k x 1) matrix
@@ -53,6 +52,7 @@ if __name__ == "__main__":
             "test_number": args.test_number,
             "theta": args.theta
         }
+    print("Finite-horizon control with the radius:", kwargs["theta"])
     finite_controller = Finite_horizon_controller.Finite_horizon_controller(**kwargs)
     finite_controller.optimize_penalty()
     finite_controller.simulate()
@@ -61,6 +61,7 @@ if __name__ == "__main__":
     
     ########### Compare the result based on two different values of theta (0.5, 1.0)   ###########
     kwargs["theta"] = 0.5
+    print("Finite-horizon control with the radius:", kwargs["theta"])
     finite_controller = Finite_horizon_controller.Finite_horizon_controller(**kwargs)
     finite_controller.optimize_penalty()
     finite_controller.simulate()
@@ -68,6 +69,7 @@ if __name__ == "__main__":
     data2 = finite_controller.X_minimax
 
     kwargs["theta"] = 1.0
+    print("Finite-horizon control with the radius:", kwargs["theta"])
     finite_controller = Finite_horizon_controller.Finite_horizon_controller(**kwargs)
     finite_controller.optimize_penalty()
     finite_controller.simulate()
@@ -75,37 +77,8 @@ if __name__ == "__main__":
     data4 = finite_controller.X_minimax
     plot_lib.plot_compare_data(data1, data2, data3, data4, figure_number=2)
 
-    '''
-    ########### Calculate optimal penalty, control energy, and reliability with respect to theta ###########
-    theta_list1 = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1.0]
-    optimal_penalty_result = []
-    control_energy_result = []
-    for theta in theta_list1:
-        print(theta)
-        kwargs["theta"] = theta
-        finite_controller = Finite_horizon_controller.Finite_horizon_controller(**kwargs)
-        finite_controller.optimize_penalty()
-        finite_controller.simulate()
-        optimal_penalty_result.append(finite_controller.optimal_penalty)
-        control_energy_result.append(finite_controller.control_energy)
 
-    theta_list2 = [0.00001, 0.00002, 0.00005, 0.0001, 0.0002, 0.0005, 0.001, 0.002, 0.005, 0.01]
-    reliability_result = [0 for i in range(10)]
-    for i, theta in enumerate(theta_list2):
-        print(theta)
-        kwargs["theta"] = theta
-        finite_controller = Finite_horizon_controller.Finite_horizon_controller(**kwargs)
-        finite_controller.optimize_penalty()
-        finite_controller.simulate_ground_truth_disturbance()
-        reliability_result[i] = reliability_result[i] + finite_controller.reliability
-    np.save('./results/optimal_penalty_result', optimal_penalty_result)
-    np.save('./results/control_energy_result', control_energy_result)
-    np.save('./results/reliability_result', reliability_result)
-    plot_lib.plot_all_data(theta_list1, optimal_penalty_result, control_energy_result, theta_list2, reliability_result,
-                           figure_number=3)
-
-    '''
-    ########### Infinite Horizon Control ###########
+    ########### Infinite-Horizon Control ###########
     if args.use_saved_sample:
         # Load sample data (stationary at each stage)
         single_stage_sample = np.load("./inputs/single_stage_sample.npy") # (Stage number x Sample number x k x 1) matrix
@@ -124,10 +97,42 @@ if __name__ == "__main__":
             "stage_number": args.stage_number,
             "test_number": args.test_number,
             "theta": args.theta,
-            "penalty": 1.5
         }
+    print("Infinite-horizon control with the radius:", kwargs["theta"])
     infinite_controller = Infinite_horizon_controller.Infinite_horizon_controller(**kwargs)
+    infinite_controller.optimize_penalty()
     infinite_controller.simulate()
     infinite_controller.plot_both_controllers(state_index=19, figure_number=2)
     infinite_controller.save()
 
+
+    '''
+     ########### Calculate optimal penalty, control energy, and reliability with respect to theta ###########
+     theta_list1 = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1.0]
+     optimal_penalty_result = []
+     control_energy_result = []
+     for theta in theta_list1:
+         print(theta)
+         kwargs["theta"] = theta
+         finite_controller = Finite_horizon_controller.Finite_horizon_controller(**kwargs)
+         finite_controller.optimize_penalty()
+         finite_controller.simulate()
+         optimal_penalty_result.append(finite_controller.optimal_penalty)
+         control_energy_result.append(finite_controller.control_energy)
+
+     theta_list2 = [0.00001, 0.00002, 0.00005, 0.0001, 0.0002, 0.0005, 0.001, 0.002, 0.005, 0.01]
+     reliability_result = [0 for i in range(10)]
+     for i, theta in enumerate(theta_list2):
+         print(theta)
+         kwargs["theta"] = theta
+         finite_controller = Finite_horizon_controller.Finite_horizon_controller(**kwargs)
+         finite_controller.optimize_penalty()
+         finite_controller.simulate_ground_truth_disturbance()
+         reliability_result[i] = reliability_result[i] + finite_controller.reliability
+     np.save('./results/optimal_penalty_result', optimal_penalty_result)
+     np.save('./results/control_energy_result', control_energy_result)
+     np.save('./results/reliability_result', reliability_result)
+     plot_lib.plot_all_data(theta_list1, optimal_penalty_result, control_energy_result, theta_list2, reliability_result,
+                            figure_number=3)
+
+     '''

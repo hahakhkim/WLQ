@@ -79,8 +79,8 @@ def worst_case_distribution(sample, x, u, A, B, Xi, P, r, penalty):
 def minimax_Riccati_iteration(A, B, Xi, Q, R, P, r, z, sample, sample_mean, penalty):
     n = len(A)
     k = len(Xi[0])
-    W = matmul3(B, np.linalg.inv(R), np.transpose(B)) - 1.0/penalty*np.matmul(Xi, np.transpose(Xi))
-    temp1 = np.linalg.inv(np.eye(n) + np.matmul(P, W))
+    Phi = matmul3(B, np.linalg.inv(R), np.transpose(B)) - 1.0/penalty*np.matmul(Xi, np.transpose(Xi))
+    temp1 = np.linalg.inv(np.eye(n) + np.matmul(P, Phi))
     temp2 = matmul3(P, Xi, sample_mean) + r
     temp3 = np.linalg.inv(np.eye(k) - 1.0/penalty*matmul3(np.transpose(Xi), P, Xi))
     temp4 = np.linalg.inv(np.eye(n) - 1.0/penalty*matmul3(P, Xi, np.transpose(Xi)))
@@ -92,7 +92,7 @@ def minimax_Riccati_iteration(A, B, Xi, Q, R, P, r, z, sample, sample_mean, pena
         z_temp1 = z_temp1 + matmul6(np.transpose(w), temp3, np.transpose(Xi), P, Xi, w)
     z_temp1 = z_temp1 / len(sample)
     z_temp2 = matmul6(np.transpose(sample_mean), np.transpose(Xi), temp1 - temp4, P, Xi, sample_mean)
-    z_temp3 = matmul3(2*np.matmul(np.transpose(sample_mean), np.transpose(Xi))-np.matmul(np.transpose(r), W), temp1, r)
+    z_temp3 = matmul3(2*np.matmul(np.transpose(sample_mean), np.transpose(Xi))-np.matmul(np.transpose(r), Phi), temp1, r)
     z_result = z + z_temp1 + z_temp2 + z_temp3
     return P_result, r_result, z_result
 
@@ -126,7 +126,7 @@ def check_assumption1(stage_number, A, B, Xi, Q, Q_f, R, penalty):
         P = minimax_Riccati_iteration_P(A, B, Xi, Q, R, P, penalty)
     return True
 
-def binarysearch_infimum_penalty(stage_number, A, B, Xi, Q, Q_f, R):
+def binarysearch_infimum_penalty_finite(stage_number, A, B, Xi, Q, Q_f, R):
     left = 0
     right = 1000
     while right - left > 1e-5:
@@ -136,7 +136,6 @@ def binarysearch_infimum_penalty(stage_number, A, B, Xi, Q, Q_f, R):
         else:
             left = mid
     lam_hat = right
-    print("Infimum value of penalty coefficient satisfying Assumption1:", lam_hat)
     return lam_hat
 
 
@@ -164,8 +163,8 @@ def objective_function_finite(A, B, Xi, Q, Q_f, R, penalty, theta, stage_number,
 def solve_minimax_Riccati(A, B, Xi, Q, Q_f, R, sample, sample_mean, penalty, error_bound, max_iteration):
     P = Q_f
     r = np.zeros((len(A), 1))
-    W = matmul3(B, np.linalg.inv(R), np.transpose(B)) - np.matmul(Xi, np.transpose(Xi))/penalty
-    eigen = linalg.eigvalsh(W)
+    Phi = matmul3(B, np.linalg.inv(R), np.transpose(B)) - np.matmul(Xi, np.transpose(Xi))/penalty
+    eigen = linalg.eigvalsh(Phi)
     if np.min(eigen.real) < -1e-6:
         print("Assumption3 is violated!")
     validity = False
@@ -184,7 +183,7 @@ def solve_minimax_Riccati(A, B, Xi, Q, Q_f, R, sample, sample_mean, penalty, err
         P = P_temp
         r = r_temp
         if max_diff < error_bound:
-            print("Minimax Riccati solution found in iteration", str(i))
+            #print("Minimax Riccati solution found in iteration", str(i))
             validity = True
             return P, r, validity
     print("Minimax Riccati iteration doesn't converge")
@@ -201,13 +200,12 @@ def solve_standard_Riccati(A, B, Q, Q_f, R, error_bound, max_iteration):
                     max_diff = abs(P[row][col] - P_temp[row][col])
         P = P_temp
         if max_diff < error_bound:
-            print("Standard Riccati solution found in iteration", str(i))
+            #print("Standard Riccati solution found in iteration", str(i))
             return P
-    print("Standard Riccati iteration doesn't fully converge")
+    print("Standard Riccati iteration doesn't converge")
     return P
 
 def objective_function_infinite(A, B, Xi, Q, Q_f, R, penalty, theta, sample, sample_mean, error_bound, max_iteration):
-    print(penalty)
     if penalty < 0:
         return math.inf
 
@@ -220,14 +218,12 @@ def objective_function_infinite(A, B, Xi, Q, Q_f, R, penalty, theta, sample, sam
 
     # Assumption1 Test
     if np.max(eigen.real) > penalty:
-        print("maximum eigenvalue :", np.max(eigen.real))
-        print("penalty :", penalty)
         return math.inf
 
     n = len(A)
     k = len(Xi[0])
-    W = matmul3(B, np.linalg.inv(R), np.transpose(B)) - 1.0/penalty*np.matmul(Xi, np.transpose(Xi))
-    temp1 = np.linalg.inv(np.eye(n) + np.matmul(P, W))
+    Phi = matmul3(B, np.linalg.inv(R), np.transpose(B)) - 1.0/penalty*np.matmul(Xi, np.transpose(Xi))
+    temp1 = np.linalg.inv(np.eye(n) + np.matmul(P, Phi))
     temp2 = np.linalg.inv(np.eye(k) - 1.0/penalty*matmul3(np.transpose(Xi), P, Xi))
     temp3 = np.linalg.inv(np.eye(n) - 1.0/penalty*matmul3(P, Xi, np.transpose(Xi)))
     z_temp1 = np.zeros((1, 1))
@@ -236,9 +232,54 @@ def objective_function_infinite(A, B, Xi, Q, Q_f, R, penalty, theta, sample, sam
         z_temp1 = z_temp1 + matmul6(np.transpose(w), temp2, np.transpose(Xi), P, Xi, w)
     z_temp1 = z_temp1 / len(sample)
     z_temp2 = matmul6(np.transpose(sample_mean), np.transpose(Xi), temp1 - temp3, P, Xi, sample_mean)
-    z_temp3 = matmul3(2*np.matmul(np.transpose(sample_mean), np.transpose(Xi))-np.matmul(np.transpose(r), W), temp1, r)
+    z_temp3 = matmul3(2*np.matmul(np.transpose(sample_mean), np.transpose(Xi))-np.matmul(np.transpose(r), Phi), temp1, r)
     z_result = z_temp1 + z_temp2 + z_temp3
     result = penalty * theta * theta + z_result[0][0]
-    print(result)
     return result
 
+
+def binarysearch_infimum_penalty_infinite(A, B, Xi, Q, Q_f, R):
+    left = 0
+    right = 1000
+    while right - left > 1e-5:
+        mid = (left + right) / 2.0
+        Phi = matmul3(B, np.linalg.inv(R), np.transpose(B)) - 1.0 / mid * np.matmul(Xi, np.transpose(Xi))
+        eigen = linalg.eigvalsh(Phi)
+        if np.min(eigen.real) > -1e-10:
+            right = mid
+        else:
+            left = mid
+    lam_hat11 = right
+    #print("11", lam_hat11)
+
+
+    P = solve_standard_Riccati(A, B, Q, Q_f, R, error_bound=1e-6, max_iteration=10000)
+    n = len(A)
+    left = 0
+    right = 1000
+    while right - left > 1e-5:
+        mid = (left + right) / 2.0
+        Phi = matmul3(B, np.linalg.inv(R), np.transpose(B)) - 1.0 / mid * np.matmul(Xi, np.transpose(Xi))
+        C = A - matmul4(Phi, np.linalg.inv(np.eye(n) + matmul4(P, B, np.linalg.inv(R), np.transpose(B))), P, A)
+        eigen = linalg.eig(C)[0]
+        if np.max(np.absolute(eigen)) < 1:
+            right = mid
+        else:
+            left = mid
+    lam_hat12 = right
+    #print("12", lam_hat12)
+
+    lam_hat1 = np.maximum(lam_hat11, lam_hat12)
+
+    left = 0
+    right = 1000
+    while right - left > 1e-5:
+        mid = (left + right) / 2.0
+        if check_assumption1(2000, A, B, Xi, Q, Q_f, R, mid):
+            right = mid
+        else:
+            left = mid
+    lam_hat2 = right
+    #print("2", lam_hat2)
+    lam_hat = np.maximum(lam_hat1, lam_hat2)
+    return lam_hat
