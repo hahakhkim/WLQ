@@ -1,6 +1,6 @@
 # Minimax Linear Quadratic Control with Wasserstein Distance
-![alt text](Figure_1.gif)
 Numerical experiments of Minimax Linear Quadratic Controller using the Wasserstein Metric.
+![alt text](Figure_1.gif | width=100)
 
 ### Prerequisites
 
