@@ -11,6 +11,9 @@ python main.py
 ```
 
 ### Input & Parameters
+System matrices(A, B, Xi, Q, Q_f, R), the initial state(x_0), and the sample(w) are saved as npy file in '/input' folder.
+You can modify this data.
+
 
 ### Output
 <img src="Figure_1.gif" alt="drawing" width="400"/>
