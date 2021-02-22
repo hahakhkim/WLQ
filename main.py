@@ -11,10 +11,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--stage_number", default=150, type=int) # Number of stages
     parser.add_argument("--test_number", default=1000, type=int) # Number of test cases
-    parser.add_argument("--theta", default=0.5) # Radius of the Wasserstein ambiguity set
+    parser.add_argument("--theta", default=0.5, type=float) # Radius of the Wasserstein ambiguity set
     parser.add_argument("--sample_number", default=10, type=int)  # Number of samples
-    parser.add_argument("--sample_mean", default=0.02)  # Mean of generated samples
-    parser.add_argument("--sample_sigma", default=0.01)  # Sigma of generated samples
+    parser.add_argument("--sample_mean", default=0.02, type=float)  # Mean of generated samples
+    parser.add_argument("--sample_sigma", default=0.01, type=float)  # Sigma of generated samples
     parser.add_argument("--use_saved_sample", action="store_true")
     args = parser.parse_args()
 

@@ -11,8 +11,19 @@ python main.py
 ```
 
 ### Input & Parameters
-System matrices(A, B, Xi, Q, Q_f, R), the initial state(x_0), and the sample(w) are saved as npy file in '/input' folder.
+System matrices(A, B, Xi, Q, Q_f, R), the initial state vector(x_0), and the sample data(w) are saved as .npy file in the '/input' folder.
 You can modify this data.
+Other parameters can be modified by adding commnad line arguments.
+For instance, try
+```
+python main.py --stage_number 200 --test_number 2000 --theta 1.0 --sample_number 20 --sample_mean 0.01 --sample_sigma 0.01
+
+```
+If you want to use saved data for sample rather than generating it, try
+```
+python main.py --stage_number 200 --test_number 2000 --theta 1.0 python main.py --use_saved_sample
+
+```
 
 
 ### Output
